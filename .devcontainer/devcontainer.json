@@ -3,7 +3,14 @@
 {
   "name": "NestJS Ariel",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bullseye",
+  "dockerComposeFile": "docker-compose.yml",
+
+  "service": "backend",
+
+  "workspaceFolder": "/workspaces/nestjs-ariel",
+
+  "shutdownAction": "stopCompose",
+
   "features": {
     "ghcr.io/schlich/devcontainer-features/powerlevel10k:1": {}
   },
@@ -12,7 +19,7 @@
   "forwardPorts": [3000],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  // "postCreateCommand": "yarn install",
+  "postCreateCommand": "npm ci",
 
   // Configure tool-specific properties.
   "customizations": {

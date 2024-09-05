@@ -1,0 +1,31 @@
+version: '3.8'
+
+name: nestjs-ariel
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    volumes:
+      - ..:/workspaces:cached
+      - nestjs-ariel_node_modules:/workspaces/backend/node_modules
+
+    command: /bin/sh -c "while sleep 1000; do :; done"
+
+    network_mode: service:db
+
+  db:
+    image: postgres:14
+    restart: unless-stopped
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRESS_DB: nestjs-ariel
+
+volumes:
+  nestjs-ariel_node_modules:
+  postgres-data:
