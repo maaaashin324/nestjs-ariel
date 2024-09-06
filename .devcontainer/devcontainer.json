@@ -7,7 +7,7 @@
 
   "service": "backend",
 
-  "workspaceFolder": "/workspaces/nestjs-ariel",
+  "workspaceFolder": "/workspaces",
 
   "shutdownAction": "stopCompose",
 
