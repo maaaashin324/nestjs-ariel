@@ -24,7 +24,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRESS_DB: nestjs-ariel
+      POSTGRESS_DB: nestjs_ariel
 
 volumes:
   nestjs-ariel_node_modules:
