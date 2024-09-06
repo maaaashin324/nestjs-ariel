@@ -12,7 +12,9 @@
   "shutdownAction": "stopCompose",
 
   "features": {
-    "ghcr.io/schlich/devcontainer-features/powerlevel10k:1": {}
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "configureZshAsDefaultShell": true
+    }
   },
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
