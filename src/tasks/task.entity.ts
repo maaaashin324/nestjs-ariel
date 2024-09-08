@@ -18,6 +18,6 @@ export class Task {
   status: TaskStatus;
 
   @ManyToOne(() => User, (user) => user.tasks, { eager: false })
-  @Exclude({ toPlainOnly: true })
+  @Exclude({ toPlainOnly: true }) // Exclude the user field from the response
   user: User;
 }
