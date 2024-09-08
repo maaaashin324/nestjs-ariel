@@ -8,7 +8,7 @@ import { Task } from './task.entity';
 import { User } from 'src/auth/user.entity';
 
 export interface ITaskRepository {
-  getTasks(filterDto: GetTasksFilterDto): Promise<Task[]>;
+  getTasks(filterDto: GetTasksFilterDto, user: User): Promise<Task[]>;
   getTaskById(id: string): Promise<Task>;
   createTask(createTaskDto: CreateTaskDto, user: User): Promise<Task>;
   deleteTask(id: string): Promise<number>;
@@ -21,8 +21,8 @@ export class TasksService {
     @Inject('ITaskRepository') private readonly taskRepository: ITaskRepository,
   ) {}
 
-  async getTasks(filterDto: GetTasksFilterDto): Promise<Task[]> {
-    return this.taskRepository.getTasks(filterDto);
+  async getTasks(filterDto: GetTasksFilterDto, user: User): Promise<Task[]> {
+    return this.taskRepository.getTasks(filterDto, user);
   }
 
   async getTaskById(id: string): Promise<Task> {
