@@ -5,11 +5,12 @@ import {
   UpdateTaskStatusDto,
 } from './dto/tasks.dto';
 import { Task } from './task.entity';
+import { User } from 'src/auth/user.entity';
 
 export interface ITaskRepository {
   getTasks(filterDto: GetTasksFilterDto): Promise<Task[]>;
   getTaskById(id: string): Promise<Task>;
-  createTask(createTaskDto: CreateTaskDto): Promise<Task>;
+  createTask(createTaskDto: CreateTaskDto, user: User): Promise<Task>;
   deleteTask(id: string): Promise<number>;
   updateTaskStatus(id: string, status: string): Promise<Task>;
 }
@@ -34,8 +35,8 @@ export class TasksService {
     return found;
   }
 
-  createTask(createTaskDto: CreateTaskDto): Promise<Task> {
-    return this.taskRepository.createTask(createTaskDto);
+  createTask(createTaskDto: CreateTaskDto, user: User): Promise<Task> {
+    return this.taskRepository.createTask(createTaskDto, user);
   }
 
   async deleteTask(id: string): Promise<void> {

@@ -5,6 +5,7 @@ import { TaskStatus } from './task-status.enum';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ITaskRepository } from './tasks.service';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/auth/user.entity';
 
 @Injectable()
 export class TaskRepository implements ITaskRepository {
@@ -43,13 +44,14 @@ export class TaskRepository implements ITaskRepository {
     return found;
   }
 
-  async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
+  async createTask(createTaskDto: CreateTaskDto, user: User): Promise<Task> {
     const { title, description } = createTaskDto;
 
     const task = this.taskRepository.create({
       title,
       description,
       status: TaskStatus.OPEN,
+      user,
     });
 
     try {
