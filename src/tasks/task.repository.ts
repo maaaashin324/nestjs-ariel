@@ -34,9 +34,9 @@ export class TaskRepository implements ITaskRepository {
     return query.getMany();
   }
 
-  async getTaskById(id: string): Promise<Task | null> {
+  async getTaskById(id: string, user: User): Promise<Task | null> {
     const found = await this.taskRepository.findOne({
-      where: { id },
+      where: { id, user },
     });
 
     if (!found) {
@@ -65,14 +65,18 @@ export class TaskRepository implements ITaskRepository {
     }
   }
 
-  async deleteTask(id: string): Promise<number> {
-    const result = await this.taskRepository.delete(id);
+  async deleteTask(id: string, user: User): Promise<number> {
+    const result = await this.taskRepository.delete({ id, user });
 
     return result.affected ?? 0;
   }
 
-  async updateTaskStatus(id: string, status: TaskStatus): Promise<Task | null> {
-    const task = await this.getTaskById(id);
+  async updateTaskStatus(
+    id: string,
+    status: TaskStatus,
+    user: User,
+  ): Promise<Task | null> {
+    const task = await this.getTaskById(id, user);
 
     if (!task) {
       return null;
