@@ -1,14 +1,21 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Task } from './task.entity';
 import { CreateTaskDto, GetTasksFilterDto } from './dto/tasks.dto';
 import { TaskStatus } from './task-status.enum';
-import { InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { ITaskRepository } from './tasks.service';
+import { InjectRepository } from '@nestjs/typeorm';
 
-@EntityRepository(Task)
-export class TaskRepository extends Repository<Task> {
+@Injectable()
+export class TaskRepository implements ITaskRepository {
+  constructor(
+    @InjectRepository(Task)
+    private readonly taskRepository: Repository<Task>,
+  ) {}
+
   async getTasks(filterDto: GetTasksFilterDto): Promise<Task[]> {
     const { status, search } = filterDto;
-    const query = this.createQueryBuilder('task');
+    const query = this.taskRepository.createQueryBuilder('task');
 
     if (status) {
       query.andWhere('task.status = :status', { status });
@@ -25,7 +32,7 @@ export class TaskRepository extends Repository<Task> {
   }
 
   async getTaskById(id: string): Promise<Task | null> {
-    const found = await this.findOne({
+    const found = await this.taskRepository.findOne({
       where: { id },
     });
 
@@ -39,14 +46,14 @@ export class TaskRepository extends Repository<Task> {
   async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
     const { title, description } = createTaskDto;
 
-    const task = this.create({
+    const task = this.taskRepository.create({
       title,
       description,
       status: TaskStatus.OPEN,
     });
 
     try {
-      await this.save(task);
+      await this.taskRepository.save(task);
 
       return task;
     } catch (error) {
@@ -55,7 +62,7 @@ export class TaskRepository extends Repository<Task> {
   }
 
   async deleteTask(id: string): Promise<number> {
-    const result = await this.delete(id);
+    const result = await this.taskRepository.delete(id);
 
     return result.affected ?? 0;
   }
@@ -69,7 +76,7 @@ export class TaskRepository extends Repository<Task> {
 
     task.status = status;
 
-    await this.update(id, task);
+    await this.taskRepository.update(id, task);
 
     return task;
   }
