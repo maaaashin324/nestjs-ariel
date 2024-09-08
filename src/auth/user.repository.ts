@@ -37,4 +37,8 @@ export class UsersRepository implements IUserRepository {
       throw new InternalServerErrorException(error);
     }
   }
+
+  async findByUsername(username: string): Promise<User | null> {
+    return this.usersRepository.findOne({ where: { username } });
+  }
 }
